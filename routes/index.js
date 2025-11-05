@@ -1,6 +1,6 @@
-/*
- * Connect all of your endpoints together here.
- */
+// routes/index.js
 module.exports = function (app, router) {
-    app.use('/api', require('./home.js')(router));
+  require('./users')(router);
+  require('./tasks')(router);
+  app.use('/api', router);
 };
