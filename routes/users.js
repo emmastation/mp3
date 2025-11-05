@@ -100,16 +100,23 @@ module.exports = function (router) {
     try {
       const user = await User.findById(req.params.id).exec();
       if (!user) return fail(res, 404, 'User not found');
+
+      const userData = user.toObject();
+
       await Task.updateMany(
         { assignedUser: String(user._id) },
         { $set: { assignedUser: '', assignedUserName: 'unassigned' } }
       );
+
       await user.deleteOne();
-      return ok(res, {}, 'User deleted', 204);
+
+      return ok(res, userData, 'User deleted successfully', 200);
     } catch {
       return fail(res, 500, 'Server error');
     }
   });
+
+  return router;
 };
 
 function parseJSONParam(param) {

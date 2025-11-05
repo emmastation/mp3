@@ -121,6 +121,9 @@ module.exports = function (router) {
     try {
       const task = await Task.findById(req.params.id).exec();
       if (!task) return fail(res, 404, 'Task not found');
+
+      const taskData = task.toObject();
+
       if (task.assignedUser) {
         await User.updateOne(
           { _id: task.assignedUser },
@@ -128,11 +131,13 @@ module.exports = function (router) {
         );
       }
       await task.deleteOne();
-      return ok(res, {}, 'Task deleted', 204);
+      return ok(res, taskData, 'Task deleted successfully', 200);
     } catch {
       return fail(res, 500, 'Server error');
     }
   });
+
+  return router;
 };
 
 function parseJSONParam(param) {
@@ -145,5 +150,3 @@ function ok(res, data, message = 'OK', status = 200) {
 function fail(res, status, message, data = {}) {
   return res.status(status).json({ message, data });
 }
-
-return router;   
