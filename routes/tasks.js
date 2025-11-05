@@ -145,3 +145,5 @@ function ok(res, data, message = 'OK', status = 200) {
 function fail(res, status, message, data = {}) {
   return res.status(status).json({ message, data });
 }
+
+return router;   

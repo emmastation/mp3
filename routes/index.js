@@ -1,6 +1,5 @@
 // routes/index.js
 module.exports = function (app, router) {
-  require('./users')(router);
-  require('./tasks')(router);
-  app.use('/api', router);
+  app.use('/api', require('./users')(router));
+  app.use('/api', require('./tasks')(router));
 };
